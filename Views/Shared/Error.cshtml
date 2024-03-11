@@ -1,0 +1,19 @@
+﻿@model Microsoft.AspNetCore.Mvc.ProblemDetails
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Error</h1>
+        <p>An error occurred while processing your request.</p>
+        <p>Status Code: @Model.Status</p>
+        <p>Title: @Model.Title</p>
+        <p>Detail: @Model.Detail</p>
+    </div>
+</body>
+</html>
