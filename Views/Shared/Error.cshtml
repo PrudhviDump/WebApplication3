@@ -11,9 +11,9 @@
     <div class="container">
         <h1>Error</h1>
         <p>An error occurred while processing your request.</p>
-        <p>Status Code: @Model.Status</p>
-        <p>Title: @Model.Title</p>
-        <p>Detail: @Model.Detail</p>
+        <p>Status Code: @(Model.Status.HasValue ? Model.Status.ToString() : "N/A")</p>
+        <p>Title: @(Model.Title != null ? Model.Title : "N/A")</p>
+        <p>Detail: @(Model.Detail != null ? Model.Detail : "N/A")</p>
     </div>
 </body>
 </html>

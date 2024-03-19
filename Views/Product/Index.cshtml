@@ -2,26 +2,33 @@
 
 <h2>Products</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Image</th>
-            <th>Price</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.ProductName</td>
-                <td><img src="@product.ProductImageUrl" alt="Product Image" width="100" height="100" /></td>
-                <td>@product.ProductPrice</td>
-                <td>
-                    <a href="@Url.Action("View", "Product", new { id = product.ProductId })" class="btn btn-primary">View</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container">
+    @foreach (var product in Model)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <h4>@product.ProductName</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@product.ProductImageUrl" alt="Product Image" class="img-fluid" />
+            </div>
+            <div class="col-md-8">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Price:</strong> @product.ProductPrice</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("View", "Product", new { id = product.ProductId })" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+    }
+</div>

@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
@@ -12,24 +16,32 @@ namespace WebApplication3.Controllers
         public ProductController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress = new System.Uri("http://localhost:5052/api/product/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5052/api/Product/");
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync("getall");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var products = JsonSerializer.Deserialize<List<ProductModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var response = await _httpClient.GetAsync("Get");
 
-                return View(products);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var products = JsonSerializer.Deserialize<List<ProductModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    return View(products);
+                }
+                else
+                {
+                    // Handle error appropriately
+                    return StatusCode((int)response.StatusCode);
+                }
             }
-            else
+            catch (HttpRequestException ex)
             {
-                // Handle error appropriately
-                return StatusCode((int)response.StatusCode);
+                // Log or handle the exception as needed
+                return StatusCode(500); // Internal server error
             }
         }
 
@@ -41,20 +53,28 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddProductModel model)
         {
-            var json = JsonSerializer.Serialize(model);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync("addproduct", data);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                // Redirect to product list after successful addition
-                return RedirectToAction("Index");
+                var json = JsonSerializer.Serialize(model);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("AddProduct", data);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Redirect to product list after successful addition
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to add product. Please try again.");
+                    return View(model);
+                }
             }
-            else
+            catch (HttpRequestException ex)
             {
-                ModelState.AddModelError(string.Empty, "Failed to add product. Please try again.");
-                return View(model);
+                // Log or handle the exception as needed
+                return StatusCode(500); // Internal server error
             }
         }
     }
