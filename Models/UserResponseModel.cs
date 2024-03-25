@@ -2,9 +2,9 @@
 {
     public class UserResponseModel
     {
-        public string Token { get; set; }
-        public string UserName { get; set; }
-        public int UserId { get; set; }
-        public int Role { get; set; }
+        public string token { get; set; }
+        public string userName { get; set; }
+        public int userId { get; set; }
+        public int role { get; set; }
     }
 }

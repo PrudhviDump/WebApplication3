@@ -4,6 +4,8 @@ namespace WebApplication3.Models
 {
     public class UpdateProductModel
     {
+        public int ProductId { get; set; }
+        
         [Required(ErrorMessage = "Product name is required.")]
         [StringLength(50, ErrorMessage = "Product name must be between 1 and 50 characters.", MinimumLength = 1)]
         public string ProductName { get; set; }

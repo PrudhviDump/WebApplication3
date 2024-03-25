@@ -1,0 +1,35 @@
+﻿@model List<WebApplication3.Models.ProductModel>
+
+<h2>Products</h2>
+
+<div class="container">
+    @foreach (var product in Model)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <h4>@product.ProductName</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@product.ProductImageUrl" alt="Product Image" class="img-fluid" />
+            </div>
+            <div class="col-md-8">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Price:</strong> @product.ProductPrice</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("View", "Product", new { id = product.ProductId })" class="btn btn-primary">View</a>
+                                <a href="@Url.Action("Update","Product",new { id = product.ProductId})" class="btn btn-primary">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+    }
+</div>

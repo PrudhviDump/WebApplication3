@@ -30,8 +30,22 @@ namespace WebApplication3.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var authResponse = JsonSerializer.Deserialize<UserResponseModel>(responseContent);
+
+                // Save the JWT token in session storage
+                HttpContext.Session.SetString("JwtToken", authResponse.token);
+
+                // Save the user role in session storage
+                HttpContext.Session.SetString("UserRole", authResponse.role.ToString());
+
                 // Redirect to appropriate dashboard based on user role
-                return RedirectToAction("Index", "Product");
+                if (authResponse.role == 1) // Admin RoleId
+                {
+                    return RedirectToAction("AdminHomepage", "Product");
+                }
+                    return RedirectToAction("UserHomepage", "Homepage");
+                
             }
             else
             {
